@@ -95,6 +95,40 @@ public class EmployeeController {
             return new ResponseEntity<Optional<Employee>>(HttpStatus.NOT_FOUND);
         }
     }
+    
+    @GetMapping(value="/findByFirstName")
+    private ResponseEntity<List<Employee>> findByFirstName(@RequestParam("firstName") String firstName) {
+        System.out.println("find by firstName "+firstName);
+        List<Employee> emp = empService.findByFirstName(firstName);
+        if(emp!=null) {
+            return new ResponseEntity<List<Employee>>(emp, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<List<Employee>>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value="/findByLastName")
+    private ResponseEntity<List<Employee>> findByLastName(@RequestParam("lastName") String lastName) {
+        System.out.println("find by lastName "+lastName);
+        List<Employee> emp = empService.findByLastName(lastName);
+        if(emp!=null) {
+            return new ResponseEntity<List<Employee>>(emp, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<List<Employee>>(HttpStatus.NOT_FOUND);
+        }
+    }
+    
+    @GetMapping(value="/findByCity")
+    private ResponseEntity<List<Employee>> findByCity(@RequestParam("city") String city) {
+        System.out.println("find by city "+city);
+        List<Employee> emp = empService.findByCity(city);
+        if(emp!=null) {
+            return new ResponseEntity<List<Employee>>(emp, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<List<Employee>>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
     @PostMapping(value="/save")
     private ResponseEntity<String> create(Employee emp) throws Exception {
@@ -119,12 +153,46 @@ public class EmployeeController {
     }
 
     @DeleteMapping
-    private ResponseEntity<String> deleteById(@RequestParam("id") Integer id){
-        if(empService.findById(id)!= null) {
-        	empService.deleteById(id);
-            return new ResponseEntity<String>("Successfully deleted the employee", HttpStatus.OK);
+    private ResponseEntity<String> deleteById(@RequestParam("id") Integer id, @RequestParam("isSoftDelete") boolean isSoftDelete){
+    	System.out.println("isSoftDelete: "+isSoftDelete);
+	    Optional<Employee> existingEmp = empService.findById(id);
+        if(existingEmp.isPresent()) {
+        	if(!isSoftDelete) {        		
+        		empService.deleteById(id);
+                return new ResponseEntity<String>("Successfully Hard deleted the employee", HttpStatus.OK);
+        	}else {
+            	System.out.println("isSoftDelete: "+isSoftDelete);
+        		Employee emp = existingEmp.get();
+        		emp.setSoftDelete(isSoftDelete);
+        		empService.update(emp);
+        		return new ResponseEntity<String>("Successfully Soft deleted the employee", HttpStatus.OK);
+        	}
         }else {
             return new ResponseEntity<String>("Conflict, employee does not exists", HttpStatus.CONFLICT);
         }
     }
+    
+    @GetMapping(value="/sortByJoiningDate")
+    private ResponseEntity<List<Employee>> sortByJoiningDate() {
+        System.out.println("sortByJoiningDate ");
+        List<Employee> emp = empService.sortByJoiningDate();
+        if(emp!=null) {
+            return new ResponseEntity<List<Employee>>(emp, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<List<Employee>>(HttpStatus.NOT_FOUND);
+        }
+    }
+    
+    @GetMapping(value="/sortByCity")
+    private ResponseEntity<List<Employee>> sortByCity() {
+        System.out.println("sortByCity ");
+        List<Employee> emp = empService.sortByCity();
+        if(emp!=null) {
+            return new ResponseEntity<List<Employee>>(emp, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<List<Employee>>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }

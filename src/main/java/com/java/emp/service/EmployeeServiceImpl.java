@@ -42,6 +42,32 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Override
 	public void deleteById(Integer id) {
 		empDao.deleteById(id);
-		
 	}
+
+	@Override
+	public List<Employee> findByFirstName(String firstName) {
+		return empDao.findByFirstName(firstName);
+	}
+
+	@Override
+	public List<Employee> findByLastName(String lastName) {
+		return empDao.findByLastName(lastName);
+	}
+
+	@Override
+	public List<Employee> findByCity(String city) {
+		return empDao.findByCity(city);
+	}
+
+	@Override
+	public List<Employee> sortByJoiningDate() {
+		return empDao.sortByJoiningDate();
+	}
+
+	@Override
+	public List<Employee> sortByCity() {
+		return empDao.sortByCity();
+	}
+
+
 }

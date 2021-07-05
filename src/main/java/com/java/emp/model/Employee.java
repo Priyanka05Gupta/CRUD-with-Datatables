@@ -5,6 +5,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 @XmlRootElement
@@ -34,6 +36,10 @@ public class Employee {
 
     @Column
     private String city;
+    
+    @JsonIgnore
+    @Column(name="soft_delete")
+    private boolean softDelete;
 
     public Employee(int id, String first_name, String last_name, Date joining_date, int salary, String gender, String city) {
         this.id = id;
@@ -104,4 +110,13 @@ public class Employee {
     public void setCity(String city) {
         this.city = city;
     }
+
+	public boolean isSoftDelete() {
+		return softDelete;
+	}
+
+	public void setSoftDelete(boolean softDelete) {
+		this.softDelete = softDelete;
+	}
+  
 }

@@ -16,4 +16,14 @@ public interface EmployeeService {
 	void update(Employee emp);
 
 	void deleteById(Integer id);
+
+	List<Employee> findByFirstName(String firstName);
+
+	List<Employee> findByLastName(String lastName);
+
+	List<Employee> findByCity(String city);
+
+	List<Employee> sortByJoiningDate();
+
+	List<Employee> sortByCity();
 }
