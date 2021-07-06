@@ -58,7 +58,7 @@ public class EmployeeController {
     }
 
    @GetMapping(value="/findAll")
-    private ResponseEntity<Iterable<Employee>> findAll() {
+    public ResponseEntity<Iterable<Employee>> findAll() {
 	   System.out.println("inside FindAll() method");
 	   try {
 	       return new ResponseEntity<Iterable<Employee>>(empService.findAll(), HttpStatus.OK);
@@ -68,7 +68,7 @@ public class EmployeeController {
     }
    
    @GetMapping(value="/findByIdForUpdate")
-   private ModelAndView findByIdForUpdate(@RequestParam("id") Integer id, Model model) {
+   public ModelAndView findByIdForUpdate(@RequestParam("id") Integer id, Model model) {
        System.out.println("find"+id);
        Optional<Employee> emp = empService.findById(id);
     	List<String> cityList = Arrays.asList("Pune","Mumbai"); 
@@ -86,7 +86,7 @@ public class EmployeeController {
   }
 
     @GetMapping(value="/findById")
-    private ResponseEntity<Optional<Employee>> findById(@RequestParam("id") Integer id) {
+    public ResponseEntity<Optional<Employee>> findById(@RequestParam("id") Integer id) {
         System.out.println("find"+id);
         Optional<Employee> emp = empService.findById(id);
         if(emp!=null) {
@@ -97,7 +97,7 @@ public class EmployeeController {
     }
     
     @GetMapping(value="/findByFirstName")
-    private ResponseEntity<List<Employee>> findByFirstName(@RequestParam("firstName") String firstName) {
+    public ResponseEntity<List<Employee>> findByFirstName(@RequestParam("firstName") String firstName) {
         System.out.println("find by firstName "+firstName);
         List<Employee> emp = empService.findByFirstName(firstName);
         if(emp!=null) {
@@ -108,7 +108,7 @@ public class EmployeeController {
     }
 
     @GetMapping(value="/findByLastName")
-    private ResponseEntity<List<Employee>> findByLastName(@RequestParam("lastName") String lastName) {
+    public ResponseEntity<List<Employee>> findByLastName(@RequestParam("lastName") String lastName) {
         System.out.println("find by lastName "+lastName);
         List<Employee> emp = empService.findByLastName(lastName);
         if(emp!=null) {
@@ -119,7 +119,7 @@ public class EmployeeController {
     }
     
     @GetMapping(value="/findByCity")
-    private ResponseEntity<List<Employee>> findByCity(@RequestParam("city") String city) {
+    public ResponseEntity<List<Employee>> findByCity(@RequestParam("city") String city) {
         System.out.println("find by city "+city);
         List<Employee> emp = empService.findByCity(city);
         if(emp!=null) {
@@ -131,7 +131,7 @@ public class EmployeeController {
 
 
     @PostMapping(value="/save")
-    private ResponseEntity<String> create(Employee emp) throws Exception {
+    public ResponseEntity<String> create(Employee emp) throws Exception {
         if(!empService.findById(emp.getId()).isPresent()){
             empService.create(emp);
             return new ResponseEntity<String>("Created new Employee!", HttpStatus.OK);
@@ -141,7 +141,7 @@ public class EmployeeController {
     }
 
     @PostMapping(value="/update")
-    private ResponseEntity<String> update(@ModelAttribute Employee emp) {
+    public ResponseEntity<String> update(@ModelAttribute Employee emp) {
 	    System.out.println("update method: "+emp.getId());
 	    Optional<Employee> existingEmp = empService.findById(emp.getId());
         if(existingEmp.isPresent()) {
@@ -153,7 +153,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping
-    private ResponseEntity<String> deleteById(@RequestParam("id") Integer id, @RequestParam("isSoftDelete") boolean isSoftDelete){
+    public ResponseEntity<String> deleteById(@RequestParam("id") Integer id, @RequestParam("isSoftDelete") boolean isSoftDelete){
     	System.out.println("isSoftDelete: "+isSoftDelete);
 	    Optional<Employee> existingEmp = empService.findById(id);
         if(existingEmp.isPresent()) {
@@ -173,7 +173,7 @@ public class EmployeeController {
     }
     
     @GetMapping(value="/sortByJoiningDate")
-    private ResponseEntity<List<Employee>> sortByJoiningDate() {
+    public ResponseEntity<List<Employee>> sortByJoiningDate() {
         System.out.println("sortByJoiningDate ");
         List<Employee> emp = empService.sortByJoiningDate();
         if(emp!=null) {
@@ -184,7 +184,7 @@ public class EmployeeController {
     }
     
     @GetMapping(value="/sortByCity")
-    private ResponseEntity<List<Employee>> sortByCity() {
+    public ResponseEntity<List<Employee>> sortByCity() {
         System.out.println("sortByCity ");
         List<Employee> emp = empService.sortByCity();
         if(emp!=null) {
